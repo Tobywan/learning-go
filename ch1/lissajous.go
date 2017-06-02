@@ -1,5 +1,5 @@
 // Lissajous generates gif animatinos of reandome Lissajous figures
-package main
+package ch1
 
 import (
 	"bufio"
@@ -19,7 +19,6 @@ const (
 	bgIndex  = 0
 	fgIndex  = 1
 	midIndex = 2
-	cycles   = 5     // number of x revolutions
 	res      = 0.001 // angular resolution
 	size     = 100   // image canvas from -size to +size, e.g. -100..0..+100
 	nframes  = 64    // # frames
@@ -38,14 +37,16 @@ func generateLissajous(outFile string) {
 
 	w := bufio.NewWriter(f)
 
-	lissajous(w)
+	lissajous(w, 3.0, 10)
 
 	w.Flush()
+	f.Close()
+
 }
 
-func lissajous(out io.Writer) {
+func lissajous(out io.Writer, yFreq float64, cycles float64) {
 
-	freq := rand.Float64() * 3.0 // frequency of y oscillator
+	freq := rand.Float64() * yFreq // frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
 	for i := 0; i < nframes; i++ {
